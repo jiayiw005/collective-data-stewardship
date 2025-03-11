@@ -1,0 +1,14 @@
+{
+  "name": "@analyzer2004/bubble-pie-chart",
+  "main": "8ea6b0975065edb4@407.js",
+  "version": "407.0.0",
+  "homepage": "https://observablehq.com/@analyzer2004/bubble-pie-chart",
+  "author": {
+    "name": "Eric Lo",
+    "url": "https://observablehq.com/@analyzer2004"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
