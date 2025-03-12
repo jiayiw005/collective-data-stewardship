@@ -1,7 +1,20 @@
 // https://observablehq.com/@analyzer2004/bubble-pie-chart@407
 function _1(md){return(
-md`# Bubble Pie Chart
-Bubble pie chart is a unique bubble chart that allows you to show/compare/relate performance across four paramenter sets instead of two. The third value determines the size of the bubble marker, the fourth by the % of pie while the other two are determined by the position on the axis.`
+md`# Canadian Union Membership by Congress Affliation, 1963 - 1969
+- ⁠AFL-CIO/CLC Dominance: The AFL-CIO/CLC category has the highest membership across all years (1963-1968). Its membership grew steadily from 882,222 in 1963 to 1,222,249 in 1968, indicating increasing consolidation or union participation.
+
+- ⁠CLC Only Growth: The CLC Only category also shows growth, particularly after 1966, where membership jumps significantly from 212,031 in 1966 to 330,218 in 1967 and then 349,265 in 1968. This could indicate unions shifting affiliation or new formations joining the CLC.
+
+- ⁠CNTU (Confédération des syndicats nationaux) Expansion: The Confederation of National Trade Unions (CNTU) increased its membership from 110,577 in 1963 to 201,292 in 1968, nearly doubling its size, suggesting growing support for this national trade union movement in Quebec.
+
+- Decline in Some Categories: 
+   - The American Federation of Labor and Congress of Industrial Organizations (AFL-CIO) without CLC saw a sharp decline, from 30,507 in 1963 to just 678 in 1968, implying shifts to other affiliations.
+   - The Unaffiliated International Union category fluctuated slightly but showed a decline from 118,022 in 1965 to 107,833 in 1968, possibly reflecting shifts towards larger congresses.
+
+- ⁠Overall Union Growth: The total number of affiliated members appears to have grown across the years, indicating a strengthening labor movement in Canada during this period.
+- ...
+
+`
 )}
 
 function _chart(d3,width,height,drawGuidelines,chartData,x,hx,margin,y,r,toCurrency,territories,pie,color,drawAxis)
@@ -107,8 +120,8 @@ function _drawGuidelines(){return(
 }
 )}
 
-function _toCurrency(d3){return(
-num => d3.format("$,.2f")(num)
+function _toTotal(d3){return(
+num => d3.format("")(num)
 )}
 
 function _x(d3,chartData,margin,width){return(
@@ -168,7 +181,7 @@ data.columns.slice(1).map(y => {
 )}
 
 function _territories(data){return(
-data.map(d => d.territory)
+data.map(d => d.congressAffiliation)
 )}
 
 function _height(width){return(
@@ -183,34 +196,31 @@ function _d3(require){return(
 require("d3@6")
 )}
 
-function _19(md){return(
-md`🌐[ericlo.dev](https://ericlo.dev) 🐱[GitHub Repositories](https://github.com/analyzer2004?tab=repositories) 🐦[Twitter](https://twitter.com/analyzer2004)`
-)}
-
 export default function define(runtime, observer) {
   const main = runtime.module();
   function toString() { return this.url; }
   const fileAttachments = new Map([
-    ["profit6yr.csv", {url: new URL("./files/cc337900045eb136af7a8750224377ccfe2e5a19c8fea9426d8e60690e172b0272dd13713421449ac73be9b315010cdef6e3f154eb6bca7519dd32da3423b478.csv", import.meta.url), mimeType: "text/csv", toString}]
+    ["profit6yr.csv", {url: new URL("./files/congress_affiliation.csv", import.meta.url), mimeType: "text/csv", toString}]
   ]);
   main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
   main.variable(observer()).define(["md"], _1);
-  main.variable(observer("chart")).define("chart", ["d3","width","height","drawGuidelines","chartData","x","hx","margin","y","r","toCurrency","territories","pie","color","drawAxis"], _chart);
+  main.variable(observer("chart")).define("chart", 
+    ["d3","width","height","drawGuidelines","chartData","x","hx","margin","y","r",
+      "toCurrency","congressAffliation","pie","color","drawAxis"], _chart);
   main.variable(observer("drawAxis")).define("drawAxis", _drawAxis);
   main.variable(observer("drawGuidelines")).define("drawGuidelines", _drawGuidelines);
-  main.variable(observer("toCurrency")).define("toCurrency", ["d3"], _toCurrency);
+  main.variable(observer("toCurrency")).define("toCurrency", ["d3"], _toTotal);
   main.variable(observer("x")).define("x", ["d3","chartData","margin","width"], _x);
   main.variable(observer("hx")).define("hx", ["x"], _hx);
   main.variable(observer("y")).define("y", ["d3","chartData","height","margin","hx"], _y);
   main.variable(observer("r")).define("r", ["d3","chartData","hx"], _r);
   main.variable(observer("pie")).define("pie", ["d3","r"], _pie);
-  main.variable(observer("color")).define("color", ["d3","territories"], _color);
+  main.variable(observer("color")).define("color", ["d3","congressAffliation"], _color);
   main.variable(observer("data")).define("data", ["d3","FileAttachment"], _data);
   main.variable(observer("chartData")).define("chartData", ["data"], _chartData);
-  main.variable(observer("territories")).define("territories", ["data"], _territories);
+  main.variable(observer("congressAffliation")).define("congressAffliation", ["data"], _territories);
   main.variable(observer("height")).define("height", ["width"], _height);
   main.variable(observer("margin")).define("margin", _margin);
   main.variable(observer("d3")).define("d3", ["require"], _d3);
-  main.variable(observer()).define(["md"], _19);
   return main;
 }
