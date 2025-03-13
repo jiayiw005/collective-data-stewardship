@@ -5,7 +5,7 @@ md`# Canadian Union Membership by Congress Affliation, 1963 - 1969
 
 - ⁠CLC Only Growth: The CLC Only category also shows growth, particularly after 1966, where membership jumps significantly from 212,031 in 1966 to 330,218 in 1967 and then 349,265 in 1968. This could indicate unions shifting affiliation or new formations joining the CLC.
 
-- ⁠CNTU (Confédération des syndicats nationaux) Expansion: The Confederation of National Trade Unions (CNTU) increased its membership from 110,577 in 1963 to 201,292 in 1968, nearly doubling its size, suggesting growing support for this national trade union movement in Quebec.
+- ⁠CNTU Expansion: The Confederation of National Trade Unions (CNTU) increased its membership from 110,577 in 1963 to 201,292 in 1968, nearly doubling its size, suggesting growing support for this national trade union movement in Quebec.
 
 - Decline in Some Categories: 
    - The American Federation of Labor and Congress of Industrial Organizations (AFL-CIO) without CLC saw a sharp decline, from 30,507 in 1963 to just 678 in 1968, implying shifts to other affiliations.
