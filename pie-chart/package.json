@@ -1,0 +1,13 @@
+{
+  "name": "pie-chart",
+  "main": "pieChart.js",
+  "version": "474.0.0",
+  "author": {
+    "name": "jiayi",
+    "url": "https://observablehq.com/@jiayi1130"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}

@@ -24,6 +24,76 @@ function _chart(d3,width,height,drawGuidelines,chartData,x,hx,margin,y,r,toCurre
     .attr("cursor", "default")
     .attr("viewBox", [0, 0, width, height]);
   
+  // Create pattern library
+  const defs = svg.append("defs");
+  
+  // Creative pattern definitions (keeping 2 stripe variants)
+  const patterns = [
+    // Stripe patterns (keeping these 2)
+    {id: "dense-horizontal", type: "path", d: "M0,0 6,0 M0,2 6,2 M0,4 6,4", strokeWidth: 1.2},
+    {id: "diagonal-cross", type: "path", d: "M0,0 6,6 M6,0 0,6", strokeWidth: 1},
+    
+    // Creative alternatives:
+    {id: "bubbles", type: "circles", positions: [[1,1],[5,1],[3,3],[1,5],[5,5]], r: 1},
+    {id: "squares", type: "rects", positions: [[0,0],[3,0],[0,3],[3,3]], size: 2},
+    {id: "dots-grid", type: "grid-circles", cols: 3, rows: 3, r: 0.8},
+    {id: "waves", type: "path", d: "M0,1 C2,3 4,-1 6,3 C8,7 10,1 12,3", strokeWidth: 1, repeatX: true},
+    {id: "zigzag", type: "path", d: "M0,1 L2,5 L4,1 L6,5 L8,1", strokeWidth: 1.2, repeatX: true}
+  ];
+
+  // Dark color scheme
+  const grayscale = d3.scaleLinear()
+    .domain([0, territories.length - 1])
+    .range(["#555555", "#111111"]);
+
+  territories.forEach((territory, i) => {
+    const pattern = patterns[i % patterns.length];
+    const pat = defs.append("pattern")
+      .attr("id", `pattern-${i}`)
+      .attr("patternUnits", "userSpaceOnUse")
+      .attr("width", pattern.repeatX ? 6 : 6)
+      .attr("height", 6);
+
+    if (pattern.type === "path") {
+      pat.append("path")
+        .attr("d", pattern.d)
+        .attr("stroke", grayscale(i))
+        .attr("stroke-width", pattern.strokeWidth)
+        .attr("fill", "none");
+    }
+    else if (pattern.type === "circles") {
+      pattern.positions.forEach(pos => {
+        pat.append("circle")
+          .attr("cx", pos[0])
+          .attr("cy", pos[1])
+          .attr("r", pattern.r)
+          .attr("fill", grayscale(i));
+      });
+    }
+    else if (pattern.type === "rects") {
+      pattern.positions.forEach(pos => {
+        pat.append("rect")
+          .attr("x", pos[0])
+          .attr("y", pos[1])
+          .attr("width", pattern.size)
+          .attr("height", pattern.size)
+          .attr("fill", grayscale(i));
+      });
+    }
+    else if (pattern.type === "grid-circles") {
+      for (let col = 0; col < pattern.cols; col++) {
+        for (let row = 0; row < pattern.rows; row++) {
+          pat.append("circle")
+            .attr("cx", (col + 0.5) * (6 / pattern.cols))
+            .attr("cy", (row + 0.5) * (6 / pattern.rows))
+            .attr("r", pattern.r)
+            .attr("fill", grayscale(i));
+        }
+      }
+    }
+  });
+
+  
   svg.append("g").call(g => drawGuidelines(g, chartData.map(d => d.year), 
     d => d3.line()([[x(d) + hx, margin.top],[x(d) + hx, height - margin.bottom]]))
   );
@@ -50,13 +120,14 @@ function _chart(d3,width,height,drawGuidelines,chartData,x,hx,margin,y,r,toCurre
           .text((d, i) => `${territories[i]}\n${toCurrency(d.pie.value)} (${(d.pie.value / d.total * 100).toFixed(1)}%)`));
   
   const slice = pg.append("path")
-      .attr("d", d => pie(d)())
-      .attr("opacity", 1)
-      .attr("fill", (d, i) => color(territories[i]));
+    .attr("d", d => pie(d)())
+    .attr("opacity", 1)
+    .attr("fill", (d, i) => `url(#pattern-${i})`);
   
-  const pct = pg.append("text")
+    const pct = pg.append("text")
     .attr("text-anchor", "middle")
-    .attr("fill", "white")    
+    .attr("fill", "#ff4444") // Bright red color for percentages
+    .attr("font-weight", "bold") // Make them stand out more
     .attr("transform", (d, i) => {
       const c = pie(d).centroid(d.pie.value);
       return `translate(${c[0]},${c[1]})`;
@@ -65,7 +136,10 @@ function _chart(d3,width,height,drawGuidelines,chartData,x,hx,margin,y,r,toCurre
     .text(d => (d.pie.value / d.total * 100).toFixed(1) + "%");
   
   svg.append("g").call(g => drawAxis(g, margin.left, 0, d3.axisLeft(y).ticks(height / 100, "s")));
-  svg.append("g").call(g => drawAxis(g, 0, height - margin.bottom, d3.axisBottom(x)));  
+  svg.append("g").call(g => drawAxis(g, 0, height - margin.bottom, d3.axisBottom(x))); 
+  svg.append("g").call(g => drawGuidelines(g, chartData.map(d => d.year), 
+    d => d3.line()([[x(d) + hx, margin.top],[x(d) + hx, height - margin.bottom]]))
+  ); 
   svg.append("g").call(drawLegend);
   
   return svg.node();
@@ -80,7 +154,7 @@ function _chart(d3,width,height,drawGuidelines,chartData,x,hx,margin,y,r,toCurre
       .call(g => g.append("rect")
             .attr("rx", 3).attr("ry", 3)
             .attr("width", 20).attr("height", 15)
-            .attr("fill", d => color(d)))
+            .attr("fill", (d, i) => `url(#pattern-${i})`))
       .call(g => g.append("text").attr("dx", 25).attr("alignment-baseline", "hanging").text(d => d))
       .on("mouseover", e => highlight(e))
       .on("mouseout", () => highlight());
