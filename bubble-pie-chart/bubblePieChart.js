@@ -1,4 +1,3 @@
-// https://observablehq.com/@analyzer2004/bubble-pie-chart@407
 function _1(md){return(
 md`# Canadian Union Membership by Congress Affliation, 1963 - 1969
 - ⁠AFL-CIO/CLC Dominance: The AFL-CIO/CLC category has the highest membership across all years (1963-1968). Its membership grew steadily from 882,222 in 1963 to 1,222,249 in 1968, indicating increasing consolidation or union participation.

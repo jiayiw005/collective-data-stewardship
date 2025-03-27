@@ -1,9 +1,5 @@
 function _1(d3, data, md) { return (
-  md`<div style="color: grey; font: 13px/25.5px var(--sans-serif); text-transform: uppercase;">
-     <h1 style="display: none;">Labor Union Membership</h1>
-     <a href="https://d3js.org/">D3</a> › <a href="/@d3/gallery">Gallery</a>
-     </div>
-
+  md`
 # Labor Union Membership (1963-1969)
 
 This visualization shows labor union membership by affiliation from 1963 to 1969.`
